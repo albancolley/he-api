@@ -14,35 +14,41 @@ Getting up and running is as easy as 1, 2, 3.
 2. Install your dependencies
 
     ```
-    cd path/to/he-api; npm install
+    cd path/to/he-api; yarnl
     ```
 
 3. Start your app
 
     ```
-    npm start
+    yarn start
     ```
+
+4. Browse to http://localhost:3030 to test
 
 ## Testing
 
-Simply run `npm test` and all your tests in the `test/` directory will be run.
+Simply run `yarn test` and all your tests in the `test/` directory will be run.  Coverage stats will provided.
 
-## Scaffolding
+## Dockerfile
 
-Feathers has a powerful command line interface. Here are a few things it can do:
+1. Build docker image
 
-```
-$ npm install -g @feathersjs/cli          # Install Feathers CLI
+    ```
+    docker build -t he-api-app .
+    ```
 
-$ feathers generate service               # Generate a new Service
-$ feathers generate hook                  # Generate a new Hook
-$ feathers generate model                 # Generate a new Model
-$ feathers help                           # Show all commands
-```
+2. Run the image
 
-## Help
+    ```
+    docker run -p 3030:3030 -t he-api-app
+    ```
 
-For more information on all the things you can do with Feathers visit [docs.feathersjs.com](http://docs.feathersjs.com).
+3. Stop the image.  
+
+    ```
+    docker ps
+    docker stop [container id]
+    ```
 
 ## Changelog
 

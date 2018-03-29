@@ -1,0 +1,12 @@
+node_modules
+coverage
+test
+data
+.git*
+.settings
+.project
+.eslintrc.json
+.gitignore
+Dockerfile
+yarn*
+*.log
