@@ -1,6 +1,6 @@
 # he-api
 
-> Holiday Extras API
+> A User API. 
 
 ## About
 
