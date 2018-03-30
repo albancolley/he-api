@@ -48,4 +48,10 @@ describe('\'validate-user\' hook', () => {
     assert.deepEqual(result.errors, {surname: 'Surname must be provided'});
   });
 
+  it('Valid record', async () => {
+    const result = await app.service('dummy').create({email:'fred@test2.com', forename: 'fred', surname:'dag'});
+    assert.deepEqual(result.email,  'fred@test2.com');
+    assert.deepEqual(result.forename, 'fred');
+    assert.deepEqual(result.surname, 'dag');
+  });
 });

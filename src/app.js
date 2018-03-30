@@ -48,10 +48,4 @@ app.use(express.errorHandler({ logger }));
 
 app.hooks(appHooks);
 
-app.on('connection', connection => {
-  // On a new real-time connection, add it to the
-  // anonymous channel
-  app.channel('anonymous').join(connection);
-});
-
 module.exports = app;

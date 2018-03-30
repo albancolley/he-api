@@ -3,6 +3,7 @@
 //const logger = require('winston');
 
 const errors = require('@feathersjs/errors');
+const utils = require('../utils/utils.js');
 
 // eslint-disable-next-line no-unused-vars
 module.exports = function(options = {}) {
@@ -12,29 +13,29 @@ module.exports = function(options = {}) {
     //Do validation checks
     const validationErrors = new errors.BadRequest('Invalid Parameters', {});
     //Check that we have non blank emails
-    if (isBlank(user.email)) {
+    if (utils.isBlank(user.email)) {
       validationErrors.errors.email = 'Email must be provided';
     }
     else
     {
       //Is email valid
-      if (!validateEmail(user.email)) {
+      if (!utils.validateEmail(user.email)) {
         validationErrors.errors.email = 'Email address is invalid';
       }
     }
 
     //Do we have a forename
-    if (isBlank(user.forename)) {
+    if (utils.isBlank(user.forename)) {
       validationErrors.errors.forename = 'Forename must be provided';
     }
 
     //Do we have a surname
-    if (isBlank(user.surname)) {
+    if (utils.isBlank(user.surname)) {
       validationErrors.errors.surname = 'Surname must be provided';
     }
 
 
-    //If theer are any keys inteh errors object then throw error
+    //If there are any keys inteh errors object then throw error
     if (Object.keys(validationErrors.errors).length > 0) {
       throw validationErrors;
     }
@@ -42,13 +43,3 @@ module.exports = function(options = {}) {
     return context;
   };
 };
-
-function isBlank(str) {
-  return !str || /^\s*$/.test(str);
-}
-
-function validateEmail(email) {
-  // eslint-disable-next-line no-useless-escape
-  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(String(email).toLowerCase());
-}

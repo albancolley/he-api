@@ -4,6 +4,8 @@ const processUser = require('../../hooks/process-user');
 
 const validateUser = require('../../hooks/validate-user');
 
+const updateUser = require('../../hooks/update-user');
+
 module.exports = {
   before: {
     all: [],
@@ -11,7 +13,7 @@ module.exports = {
     get: [],
     create: [validateUser(), processUser()],
     update: [validateUser(), processUser()],
-    patch: [],
+    patch: [updateUser()],
     remove: []
   },
 
