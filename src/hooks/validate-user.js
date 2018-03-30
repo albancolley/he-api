@@ -4,44 +4,37 @@
 
 const errors = require('@feathersjs/errors');
 
-function isBlank(str) {
-  return !str || /^\s*$/.test(str);
-}
-
-function validateEmail(email) {
-  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // eslint-disable-line no-useless-escape
-  return re.test(String(email).toLowerCase());
-}
-
 // eslint-disable-next-line no-unused-vars
-module.exports = function (options = {}) {
+module.exports = function(options = {}) {
   return async context => {
-    const {   data } = context;
-
-    const newUser = data;
+    const user = context.data;
 
     //Do validation checks
     const validationErrors = new errors.BadRequest('Invalid Parameters', {});
-    //Check that we have non blank emails, forename and surname
-    if (isBlank(newUser.email)) {
+    //Check that we have non blank emails
+    if (isBlank(user.email)) {
       validationErrors.errors.email = 'Email must be provided';
     }
     else
     {
-      if (!validateEmail(newUser.email)) {
+      //Is email valid
+      if (!validateEmail(user.email)) {
         validationErrors.errors.email = 'Email address is invalid';
       }
     }
 
-    if (isBlank(newUser.forename)) {
+    //Do we have a forename
+    if (isBlank(user.forename)) {
       validationErrors.errors.forename = 'Forename must be provided';
     }
 
-    if (isBlank(newUser.surname)) {
+    //Do we have a surname
+    if (isBlank(user.surname)) {
       validationErrors.errors.surname = 'Surname must be provided';
     }
 
 
+    //If theer are any keys inteh errors object then throw error
     if (Object.keys(validationErrors.errors).length > 0) {
       throw validationErrors;
     }
@@ -49,3 +42,13 @@ module.exports = function (options = {}) {
     return context;
   };
 };
+
+function isBlank(str) {
+  return !str || /^\s*$/.test(str);
+}
+
+function validateEmail(email) {
+  // eslint-disable-next-line no-useless-escape
+  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
+}

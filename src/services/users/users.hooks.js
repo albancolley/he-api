@@ -9,9 +9,9 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [ validateUser(), processUser()],
-    update: [validateUser()],
-    patch: [validateUser()],
+    create: [validateUser(), processUser()],
+    update: [validateUser(), processUser()],
+    patch: [],
     remove: []
   },
 

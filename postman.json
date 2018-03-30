@@ -1,0 +1,499 @@
+{
+	"variables": [],
+	"info": {
+		"name": "HE-API",
+		"_postman_id": "7de7899b-f2b5-64bc-9db8-0955df127cc9",
+		"description": "A collection of API calls for the user persistance application",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add user fred.dag@test.com",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Email exists\"] = jsonData.email === 'fred.dag@test.com';",
+							"postman.setEnvironmentVariable(\"user_id\", jsonData.id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/users",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\" : \"fred.dag@test.com\",\n  \"forename\" : \"Fred\",\n  \"surname\" : \"Dag\"\n\n}"
+				},
+				"description": "Add the user fred.dag@test.com\n\nA user is expected to have an email, forename and surname"
+			},
+			"response": []
+		},
+		{
+			"name": "Find user fred.dag@test.com by email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"One record is returned\"] = jsonData.total === 1;",
+							"tests[\"Email is correct\"] = jsonData.data[0].email === 'fred.dag@test.com';",
+							"postman.setEnvironmentVariable(\"user_id\", jsonData.data[0].id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "{{url}}/users?email=fred.dag@test.com",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "fred.dag@test.com",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Adding the parameter email=[emailaddress] will find users with the provided email address\n\nOther possible parameters are forname, surname, created and id"
+			},
+			"response": []
+		},
+		{
+			"name": "Get user fred.dag@test.com",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Email exists\"] = jsonData.email === 'fred.dag@test.com';"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/users/{{user_id}}",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\" : \"A@test.com\",\n  \"forename\" : \"Fred\",\n  \"surname\" : \"Dag\"\n\n}"
+				},
+				"description": "Get the user for the given user id  \n\nThe URL is of the form /users/[id]\n\nNote: the previous find by email saves the id in the environment variable {{user_id}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Update user fred.dag@test.com",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Email exists\"] = jsonData.email === 'fred.dag@test.com';",
+							"tests[\"Surname changed\"] = jsonData.surname === 'Daggers';",
+							"tests[\"Has created date\"] = jsonData.created.length > 0;",
+							"postman.setEnvironmentVariable(\"user_id\", jsonData.id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/users/{{user_id}}",
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\n  \"surname\" : \"Daggers\"\n}"
+				},
+				"description": "Update users fred.dag@test.com by passing in a new surname.\n\nNote: the previous find by email saves the id in the environment variable {{user_id}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Add user james.dean@test.com",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Email exists\"] = jsonData.email === 'james.dean@test.com';"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/users",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\" : \"james.dean@test.com\",\n  \"forename\" : \"James\",\n  \"surname\" : \"Dean\"\n\n}"
+				},
+				"description": "Add the user james.dean@test.com.  \n\nA user is expected to have an email, forename and surname."
+			},
+			"response": []
+		},
+		{
+			"name": "List users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Atleast two record returned\"] = jsonData.total >= 2;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/users",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\" : \"A@test.com\",\n  \"forename\" : \"Fred\",\n  \"surname\" : \"Dag\"\n\n}"
+				},
+				"description": "List the first 10 users saved in the application"
+			},
+			"response": []
+		},
+		{
+			"name": "Add Blank User",
+			"request": {
+				"url": "{{url}}/users",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \n\n}"
+				},
+				"description": "Add a blank user to the application to test errors"
+			},
+			"response": []
+		},
+		{
+			"name": "Add user with invalid email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Email invalid\"] = jsonData.errors.email === 'Email address is invalid';",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/users",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\" : \"james@d\",\n  \"forename\" : \"James\",\n  \"surname\" : \"Dean\"  \n\n}"
+				},
+				"description": "Add user with an invalid email address"
+			},
+			"response": []
+		},
+		{
+			"name": "Find user fred.dag@test.com",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"One record is returned\"] = jsonData.total === 1;",
+							"tests[\"Email is correct\"] = jsonData.data[0].email === 'fred.dag@test.com';",
+							"postman.setEnvironmentVariable(\"user_id\", jsonData.data[0].id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "{{url}}/users?email=fred.dag@test.com",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "fred.dag@test.com",
+							"equals": true
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Get id for fred.dag@test.com"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user fred.dag@test.com",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Email is correct\"] = jsonData.email === 'fred.dag@test.com';"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/users/{{user_id}}",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\" : \"A@test.com\",\n  \"forename\" : \"Fred\",\n  \"surname\" : \"Dag\"\n\n}"
+				},
+				"description": "Delete fred.dag@test.com using user id from previous find"
+			},
+			"response": []
+		},
+		{
+			"name": "CLEARDOWN: Find by email fred.dag@test.com",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"if (jsonData.data.length > 0)",
+							"{",
+							"    postman.setEnvironmentVariable(\"user_id\", jsonData.data[0].id);",
+							"}",
+							"else",
+							"{",
+							"    postman.setEnvironmentVariable(\"user_id\", \"-1\");",
+							"}"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "{{url}}/users?email=fred.dag@test.com",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "fred.dag@test.com",
+							"equals": true
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Get id for fred.dag@test.com\n\nNote: for cleardown after tests"
+			},
+			"response": []
+		},
+		{
+			"name": "CLEARDOWN: Delete user fred.dag@test.com",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Email is correct\"] = jsonData.email === 'fred.dag@test.com';"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/users/{{user_id}}",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": "Delete user fred.dag@test.com if it exists\n\nNote: the previous find by email saves the id in the environment variable {{user_id}}"
+			},
+			"response": []
+		},
+		{
+			"name": "CLEARDOWN: Find by email james.dean@test.com",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"if (jsonData.data.length > 0)",
+							"{",
+							"    postman.setEnvironmentVariable(\"user_id\", jsonData.data[0].id);",
+							"}",
+							"else",
+							"{",
+							"    postman.setEnvironmentVariable(\"user_id\", \"-1\");",
+							"}"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "{{url}}/users?email=james.dean@test.com",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "james.dean@test.com",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Get id forjames.dean@test.com"
+			},
+			"response": []
+		},
+		{
+			"name": "CLEARDOWN: Delete user james.dean@test.com",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Email is correct\"] = jsonData.email === ' james.dean@test.com';"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/users/{{user_id}}",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": "Delete james.dean@test.com\n\nNote: the previous find by email saves the id in the environment variable {{user_id}}"
+			},
+			"response": []
+		}
+	]
+}

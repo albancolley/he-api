@@ -1,10 +1,12 @@
 # he-api
 
-> A User API. 
+>  A user persistence layer API.
 
 ## About
 
-This project uses [Feathers](http://feathersjs.com). An open source web framework for building modern real-time applications.
+An implementation of a user API as described by https://github.com/holidayextras/culture/blob/master/recruitment/developer-API-task.md
+
+Uses the [Feathers](http://feathersjs.com), an open source web framework for building modern real-time applications.
 
 ## Getting Started
 
@@ -24,6 +26,32 @@ Getting up and running is as easy as 1, 2, 3.
     ```
 
 4. Browse to http://localhost:3030 to test
+
+5. A demo is hosted at http://api.awaylaughing.uk/
+
+## Basis usage
+
+1. To list user: http://localhost:3030/users
+
+2. To add a user:
+
+```
+curl --request POST \
+  --url 'http://api.awaylaughing.uk/users' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "email" : "fred.dag@test.com",
+  "forename" : "Fred",
+  "surname" : "Dag"
+
+}'
+```
+
+> See postman collection for more details
+
+## Postman
+
+1. Postman collection at https://documenter.getpostman.com/view/3814840/he-api/RVtyqCN4#9f73f16d-25fc-3594-1ad5-40f8109e941f or in postman.json
 
 ## Testing
 

@@ -36,30 +36,6 @@ describe('\'process-user\' hook', () => {
 
   });
 
-  it('No details provided', async () => {
-
-    const result = await expect(app.service('users').create({})).to.be.rejectedWith(errors.BadRequest);
-    assert.deepEqual(result.errors, { email: 'Email must be provided', forename: 'Forename must be provided', surname: 'Surname must be provided'});
-  });
-
-  it('Invalid email provided', async () => {
-
-    const result = await expect(app.service('users').create({email:'fred'})).to.be.rejectedWith(errors.BadRequest);
-    assert.deepEqual(result.errors, { email: 'Email address is invalid', forename: 'Forename must be provided', surname: 'Surname must be provided'});
-  });
-
-  it('Valid email only', async () => {
-
-    const result = await expect(app.service('users').create({email:'fred@test.com'})).to.be.rejectedWith(errors.BadRequest);
-    assert.deepEqual(result.errors, { forename: 'Forename must be provided', surname: 'Surname must be provided'});
-  });
-
-  it('Valid email and forename', async () => {
-    const result = await expect(app.service('users').create({email:'fred@test.com', forename: 'fred'})).to.be.rejectedWith(errors.BadRequest);
-    assert.deepEqual(result.errors, {surname: 'Surname must be provided'});
-  });
-
-
   it('Valid user', async () => {
     const result = await app.service('users').create({email:'fred@test2.com', forename: 'fred', surname:'dag'});
     assert.deepEqual(result.email,  'fred@test2.com');
