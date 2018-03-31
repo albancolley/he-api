@@ -386,18 +386,6 @@
 		},
 		{
 			"name": "CLEARDOWN: Delete user fred.dag@test.com",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Email is correct\"] = jsonData.email === 'fred.dag@test.com';"
-						]
-					}
-				}
-			],
 			"request": {
 				"url": "{{url}}/users/{{user_id}}",
 				"method": "DELETE",
@@ -465,18 +453,6 @@
 		},
 		{
 			"name": "CLEARDOWN: Delete user james.dean@test.com",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Email is correct\"] = jsonData.email === ' james.dean@test.com';"
-						]
-					}
-				}
-			],
 			"request": {
 				"url": "{{url}}/users/{{user_id}}",
 				"method": "DELETE",
